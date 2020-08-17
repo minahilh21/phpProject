@@ -12,14 +12,6 @@ $pageTitle='Signup';
      <link href="https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
-
-
-         
-       <?php
-if (isset($_REQUEST['failed'])) {
-    echo $_REQUEST['failed'];
-} ?>
-
  <div class="header">
 
     <div class="wrapper">
@@ -43,6 +35,30 @@ if (isset($_REQUEST['failed'])) {
           <h2 class="text-center">Signup</h2>
         </div>
         <div class="w-50 m-auto">
+            <?php
+if (isset($_REQUEST['failed'])) {
+      if(  $_REQUEST['failed']=="invalidEmailAddress")
+{
+   echo "<div class='w-50 container alert alert-danger'>";
+   echo" <strong>Invalid Email adress!</strong> Try different email</div>";
+ }
+  else if(  $_REQUEST['failed']=="EmailAlreadyTaken")
+  {
+    echo "<div class='w-50 container alert alert-danger'>";
+   echo" <strong>Email already taken!</strong> Go to Login!</div>";
+  }
+    else if(  $_REQUEST['failed']=="passwordMissMatch")
+  {
+    echo "<div class='w-50 container alert alert-danger'>";
+   echo" <strong>Password mismatch!</strong> Retypr password</div>";
+  }
+ else if(  $_REQUEST['failed']=="InvalidName")
+  {
+    echo "<div class='w-50 container alert alert-danger'>";
+   echo" <strong>Invalid Name!</strong> Try different name</div>";
+  }
+
+} ?>
 
           <form action="inc/signupAction.php" method="post">
              <div class="form-group">
@@ -72,9 +88,6 @@ if (isset($_REQUEST['failed'])) {
 
               <div class="form-group">
 <label>Join as:</label><br>
- 
-  <input type="radio" id="moderator" name="type" value="Moderator" required>
-  <label for="male">Moderator</label><br>
   
   <input type="radio" id="author" name="type" value="Author">
   <label for="female">Author</label><br>
