@@ -1,40 +1,45 @@
 <?php
 session_start();
 include('connection.php');
+$sql = "SELECT Users.email, Users.name,Users.password, Users_type.type FROM Users INNER JOIN Users_type ON Users_type.t_id=Users.t_id";
 
-$sql = "SELECT * FROM Users";
-
-$res=$conn->query($sql);
 $success=0;
-echo $_REQUEST['user']." ".$_REQUEST['type'];
-   
-        while($row=$res->fetch_assoc()){
-           // echo "in while";
-            if( $_REQUEST['user']==$row['name'] && 
-              $_REQUEST['email']==$row['email'] && 
-              $_REQUEST['password']==$row['password'] &&
-                $_REQUEST['type']==$row['type'])
+$db =new db();
+ $res=$db->query($sql);
 
-            {
-              //echo "success";
-               $path="location:../".$_REQUEST['type']."/".$_REQUEST['type'].".php";
+        while($row=$res->fetch_assoc()){
+    
+            if( $_REQUEST['email']==$row['email'])
+
+            {  $success=1;
+              if(password_verify ( $_REQUEST["password"] , $row["password"]))
+              {
+                echo "success";
+               $path="location:../".$row['type']."/".$row['type'].".php";
                echo $path;
-                //."?uName=".$_REQUEST['user']."&type=".$_REQUEST['type'];
-                $_SESSION['uName']=$_REQUEST['user'];
-                $_SESSION['type']=$_REQUEST['type'];
-                $success=1;
+            
+                $_SESSION['uName']=$row['name'];
+                $_SESSION['type']=$row['type'];
+                
                 if($_SESSION['type']=='other')
-                  {$path="location:../index.php";}
-            header($path);
+                  {
+                    $path="location:../index.php";}
+                    header($path);
            
-            }
-           
+               }
+
+            else{ 
+            
+         header('location:../login.php?loginfailed=WrongPassword');
+         }
+           }
+
           
             }     if($success==0) { 
             
       header('location:../login.php?loginfailed=UserNotFound');
          }
 
-$conn->close();
 ?>
+
 
