@@ -5,4 +5,3 @@ $t=$_GET['title'];
 delete_book($t);
 header("location:manageBook.php?uName=$n");
 ?>
-
